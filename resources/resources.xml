@@ -1,0 +1,18 @@
+<resources>
+	<fitContributions>
+		<fitField id="0" 
+		displayInChart="true"
+		sortOrder="0"
+		precision="0"
+		chartTitle="@Strings.grind_counts_label"
+		dataLabel="@Strings.grind_counts_label"
+		unitLabel="@Strings.grind_counts_units"
+		fillColor="#FF0000" />
+        <fitField id="1"
+        displayInActivitySummary="true"
+        sortOrder = "2"
+        precision="0"
+        dataLabel="@Strings.grind_counts_label"
+        unitLabel="@Strings.grind_counts_units" />
+	</fitContributions>
+</resources>

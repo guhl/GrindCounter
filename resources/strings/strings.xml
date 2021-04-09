@@ -1,0 +1,6 @@
+<strings>
+    <string id="AppName">GrindCounter</string>
+    <string id="grind_count">Grind Count</string>
+    <string id="grind_counts_label">Grind Count</string>
+    <string id="grind_counts_units">CT</string>
+</strings>
