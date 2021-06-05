@@ -35,4 +35,3 @@ class GrindCounterMenu2Delegate extends WatchUi.Menu2InputDelegate {
         WatchUi.popView(WatchUi.SLIDE_DOWN);
     }
 }
-

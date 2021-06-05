@@ -5,6 +5,7 @@ using Toybox.SensorLogging;
 using Toybox.ActivityRecording;
 using Toybox.System;
 using Toybox.FitContributor;
+using Toybox.Application.Properties as Prop;
 
 // --- High level detection threshold
 const HIGH_THR = 0.25f;
@@ -18,8 +19,11 @@ const TIME_PTC = 7;
 const CURR_GRIND_COUNT_FIELD_ID = 0;
 const TOTAL_GRIND_COUNT_FIELD_ID = 1;
 
+const DEFAULT_TARGET = 86;
+
 var min_x = 0;
 var max_x = 0;
+var cnt_target = 0;
 
 // Grind counter class
 class GrindCounterProcess {
@@ -59,6 +63,8 @@ class GrindCounterProcess {
 
     // Constructor
     function initialize() {
+    	// read our settings
+    	cnt_target = Prop.getValue("countTarget") == null? DEFAULT_TARGET : Prop.getValue("countTarget");
         // initialize FIR filter
         var options = {:coefficients => [ -0.0278f, 0.9444f, -0.0278f ], :gain => 0.001f};
         try {

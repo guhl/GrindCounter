@@ -15,6 +15,9 @@ class GrindCounterApp extends Application.AppBase {
     function onStop(state) {
     }
 
+	function getSettingsView() {
+        return [new GrindCounterSettingsView(),new GrindCounterSettingsViewDelegate()];
+    } 
     // Return the initial view of your application here
     function getInitialView() {
         return [ new GrindCounterView(), new GrindCounterDelegate() ];
