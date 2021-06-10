@@ -15,4 +15,15 @@
         dataLabel="@Strings.grind_counts_label"
         unitLabel="@Strings.grind_counts_units" />
 	</fitContributions>
+
+	<properties>
+		<property id="countTarget" type="number">85</property>
+	</properties>
+	
+	<settings>
+	    <setting propertyKey="@Properties.countTarget" title="@Strings.CountTarget">
+	        <settingConfig type="numeric" readonly="false"/>
+	    </setting>
+	</settings>
+
 </resources>

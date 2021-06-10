@@ -24,6 +24,9 @@ class GrindCounterMenu2Delegate extends WatchUi.Menu2InputDelegate {
         	mExit = false;
         	mSave = false;
 			WatchUi.popView(WatchUi.SLIDE_DOWN);
+        } else if ( item.getId().equals("settings") ) {
+        	System.println("settings selected");
+           	WatchUi.pushView( new GrindCounterSettingsView(),new GrindCounterSettingsViewDelegate(), WatchUi.SLIDE_DOWN );
         } else {
             WatchUi.requestUpdate();
         }

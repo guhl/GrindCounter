@@ -9,8 +9,8 @@ var mCurrentView;
 class GrindCounterView extends WatchUi.View {
 
     var mLabelCount;
-    var mLabelSamples;
-    var mLabelPeriod;
+    var mLabelTarget;
+    var mLabelRemaining;
     var mGrindCounter;
 
     function initialize() {
@@ -26,8 +26,8 @@ class GrindCounterView extends WatchUi.View {
     function onLayout(dc) {
         setLayout(Rez.Layouts.MainLayout(dc));
         mLabelCount = View.findDrawableById("id_grind_count");
-    //    mLabelSamples = View.findDrawableById("id_grind_samples");
-    //    mLabelPeriod = View.findDrawableById("id_grind_period");
+        mLabelTarget = View.findDrawableById("id_grind_target");
+        mLabelRemaining = View.findDrawableById("id_grind_remaining");
     }
 
     // Called when this View is brought to the foreground. Restore
@@ -47,8 +47,8 @@ class GrindCounterView extends WatchUi.View {
     // Update the view
     function onUpdate(dc) {
         mLabelCount.setText("Count: " + mGrindCounter.getCount().toString());
-    //    mLabelSamples.setText("Samples: " + mGrindCounter.getSamples().toString());
-    //    mLabelPeriod.setText("Period: " + mGrindCounter.getPeriod().toString());
+        mLabelTarget.setText("Target: " + mGrindCounter.getTarget().toString());
+        mLabelRemaining.setText("Remaining: " + mGrindCounter.getRemaining().toString());
         View.onUpdate(dc);
     }
 

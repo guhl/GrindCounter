@@ -3,8 +3,12 @@
     	color="Graphics.COLOR_WHITE"
     	justification="Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER"
     	id="id_grind_count" font="Graphics.FONT_LARGE" />
-    <label
-    	x="center" y="dc.getHeight() / 3" color="Graphics.COLOR_WHITE" justification="Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER" id="id_grind_samples" font="Graphics.FONT_TINY">
-</label>
-    <label x="center" y="dc.getHeight() * 2 / 3" color="Graphics.COLOR_WHITE" justification="Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER" id="id_grind_period" font="Graphics.FONT_TINY"></label>
+    <label 	x="center" y="dc.getHeight() / 3" 
+    	color="Graphics.COLOR_WHITE" 
+    	justification="Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER" 
+    	id="id_grind_target" font="Graphics.FONT_TINY" />
+    <label x="center" y="dc.getHeight() * 2 / 3" 
+    	color="Graphics.COLOR_WHITE" 
+    	justification="Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER" 
+    	id="id_grind_remaining" font="Graphics.FONT_TINY" />
 </layout>

@@ -24,10 +24,19 @@ class GrindCounterDelegate extends WatchUi.BehaviorDelegate {
         	menu.addItem(new WatchUi.MenuItem("Exit", null, "exit", null));
         	menu.addItem(new WatchUi.MenuItem("Save & Exit", null, "save_exit", null));
         	menu.addItem(new WatchUi.MenuItem("Resume", null, "resume", null));
+        	menu.addItem(new WatchUi.MenuItem("Settings", null, "settings", null));
         	WatchUi.pushView(menu, new GrindCounterMenu2Delegate(), WatchUi.SLIDE_UP );
         	mCurrentView = 1;
         	return true;
         } 
+        if (keyEvent.getKey() == WatchUi.KEY_MENU) {
+	        var menu = new WatchUi.Menu2({:title=>"GrindCounter"});
+        	// Add menu items for demonstrating toggles, checkbox and icon menu items
+        	menu.addItem(new WatchUi.MenuItem("Settings", null, "settings", null));
+        	WatchUi.pushView(menu, new GrindCounterMenu2Delegate(), WatchUi.SLIDE_UP );
+        	mCurrentView = 1;
+        	return true;        
+        }
         return false;
     }
     

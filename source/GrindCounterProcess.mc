@@ -3,9 +3,10 @@ using Toybox.Sensor;
 using Toybox.Math;
 using Toybox.SensorLogging;
 using Toybox.ActivityRecording;
-using Toybox.System;
+using Toybox.System as Sy;
 using Toybox.FitContributor;
 using Toybox.Application.Properties as Prop;
+using Toybox.Attention as Attn;
 
 // --- High level detection threshold
 const HIGH_THR = 0.25f;
@@ -18,6 +19,9 @@ const TIME_PTC = 7;
 
 const CURR_GRIND_COUNT_FIELD_ID = 0;
 const TOTAL_GRIND_COUNT_FIELD_ID = 1;
+
+const VIBRATE_DUTY_CYCLE = 100;
+const VIBRATE_LENGTH = 2000;
 
 const DEFAULT_TARGET = 86;
 
@@ -40,6 +44,12 @@ class GrindCounterProcess {
     // FIT Contributions variables
     hidden var mCurrentGrindCountField = null;
     hidden var mTotalGrindCountField = null;
+    
+    var reachedGoal;
+    
+    var progressBar;
+    var progressStarted;
+	var progressValue = 0.0;
 
     // Return min of two values
     hidden function min(a, b) {
@@ -65,6 +75,8 @@ class GrindCounterProcess {
     function initialize() {
     	// read our settings
     	cnt_target = Prop.getValue("countTarget") == null? DEFAULT_TARGET : Prop.getValue("countTarget");
+    	reachedGoal = false;
+    	progressStarted = false;
         // initialize FIR filter
         var options = {:coefficients => [ -0.0278f, 0.9444f, -0.0278f ], :gain => 0.001f};
         try {
@@ -134,6 +146,23 @@ class GrindCounterProcess {
         return mLogger.getStats().samplePeriod;
     }
 
+    // Return target grind count
+    function getTarget() {
+        return cnt_target;
+    }
+
+    // Return remaining grind count
+    function getRemaining() {
+    	if (mGrindCount < cnt_target ) {
+    		return ( cnt_target - mGrindCount );
+    	} else {
+    		return 0;
+    	}
+    }
+    
+    function stopProgress() {
+    }    
+
     // Process new accel data
     function onAccelData() {
         var cur_acc_x = 0;
@@ -167,9 +196,38 @@ class GrindCounterProcess {
             	// set min_x to high value
             	min_x = 1.0;
             	mLastSampleCount = mSampleCount;
+
+	            if (!progressStarted && mGrindCount > 0) {
+	            	progressStarted = true;
+	            	progressBar = new WatchUi.ProgressBar("Grinding", null);
+	            	mCurrentView = 2;
+	            	WatchUi.pushView( progressBar, new GrindProgressDelegate(method(:stopProgress)), WatchUi.SLIDE_DOWN );
+	            }
+	            if (!reachedGoal && mGrindCount >= cnt_target) {
+	            	reachedGoal = true;
+	            	reachedGoalAlert();
+	            	if ( mCurrentView == 2 ) {
+	            		WatchUi.popView( WatchUi.SLIDE_UP );
+	            	}
+	            }
+	            if (progressStarted && mGrindCount > 0) {
+	            	progressValue = ( mGrindCount.toDouble() / cnt_target.toDouble() ) * 100.0;
+//        			System.println(progressValue);
+	            	progressBar.setProgress( progressValue );
+	            	progressBar.setDisplayString( mGrindCount.toString() );
+	            }
             }
             time++;
         }
         WatchUi.requestUpdate();
+    }
+    
+    function reachedGoalAlert() {
+    	if (Sy.getDeviceSettings().vibrateOn) {
+    		Attn.vibrate([new Attn.VibeProfile(VIBRATE_DUTY_CYCLE, VIBRATE_LENGTH)]);
+    	}
+    	if (Attn has :playTone && Sy.getDeviceSettings().tonesOn) {
+    		Attn.playTone(Attn.TONE_SUCCESS);
+    	}
     }
 }
