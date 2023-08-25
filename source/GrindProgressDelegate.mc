@@ -1,16 +1,19 @@
-using Toybox.WatchUi;
+import Toybox.WatchUi;
+import Toybox.Lang;
 
 class GrindProgressDelegate extends WatchUi.BehaviorDelegate
 {
-    var mCallback;
-    function initialize(callback) {
-        mCallback = callback;
+//    private var _callback as Method() as Void;
+
+    //! Constructor
+    //! @param callback Callback function
+    public function initialize(callback as Method() as Void) {
         BehaviorDelegate.initialize();
+//        _callback = callback;
     }
 
-    function onBack() {
-//        mCallback.invoke();
-		mExit = false;
+    function onBack() as Boolean {
+		$.g_exit = false;
         return true;
     }
 }

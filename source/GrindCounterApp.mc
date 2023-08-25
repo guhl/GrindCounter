@@ -1,25 +1,31 @@
-using Toybox.Application;
-using Toybox.WatchUi;
+import Toybox.Application;
+import Toybox.WatchUi;
+import Toybox.Lang;
 
 class GrindCounterApp extends Application.AppBase {
 
-    function initialize() {
+    public function initialize() {
         AppBase.initialize();
     }
 
     // onStart() is called on application start up
-    function onStart(state) {
+    public function onStart(state as Dictionary?) as Void {
     }
 
     // onStop() is called when your application is exiting
-    function onStop(state) {
+    public function onStop(state as Dictionary?)  as Void {
     }
 
-	function getSettingsView() {
-        return [new GrindCounterSettingsView(),new GrindCounterSettingsViewDelegate()];
+	public function getSettingsCountView() {
+        return [new GrindCounterSettingsCountView(),new GrindCounterSettingsCountViewDelegate()];
     } 
+
+	public function getSettingsTimeoutView() {
+        return [new GrindCounterSettingsTimeoutView(),new GrindCounterSettingsTimeoutViewDelegate()];
+    } 
+
     // Return the initial view of your application here
-    function getInitialView() {
+    public function getInitialView() as Array<Views or InputDelegates>? {
         return [ new GrindCounterView(), new GrindCounterDelegate() ];
     }
 

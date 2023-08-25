@@ -1,21 +1,22 @@
 
-using Toybox.WatchUi;
-using Toybox.Graphics;
+import Toybox.Graphics;
+import Toybox.Lang;
+import Toybox.WatchUi;
 
 class GrindCounterDelegate extends WatchUi.BehaviorDelegate {
 
-    function initialize() {
+    public function initialize() {
         BehaviorDelegate.initialize();
     }
 
-    function onMenu() {
+    public function onMenu() as Boolean {
         return false; // allow InputDelegate function to be called
         // return true;
     }
     
     // Detect Menu button input
-    function onKey(keyEvent) {
-        System.println(keyEvent.getKey()); // e.g. KEY_MENU = 7
+    public function onKey(keyEvent as KeyEvent) as Boolean {
+        System.println(keyEvent.getKey().toString()); // e.g. KEY_MENU = 7
         if (keyEvent.getKey() == WatchUi.KEY_ENTER) { 
         	System.println("Enter pressed -> showing Menu");
 	        // Generate a new Menu with a drawable Title
@@ -24,26 +25,28 @@ class GrindCounterDelegate extends WatchUi.BehaviorDelegate {
         	menu.addItem(new WatchUi.MenuItem("Exit", null, "exit", null));
         	menu.addItem(new WatchUi.MenuItem("Save & Exit", null, "save_exit", null));
         	menu.addItem(new WatchUi.MenuItem("Resume", null, "resume", null));
-        	menu.addItem(new WatchUi.MenuItem("Settings", null, "settings", null));
-        	WatchUi.pushView(menu, new GrindCounterMenu2Delegate(), WatchUi.SLIDE_UP );
-        	mCurrentView = 1;
+        	menu.addItem(new WatchUi.MenuItem("Count Target", null, "settings_count", null));
+        	menu.addItem(new WatchUi.MenuItem("Timeout", null, "settings_timeout", null));
+        	WatchUi.pushView(menu, new $.GrindCounterMenu2Delegate(), WatchUi.SLIDE_UP );
+        	$.g_currentView = 1;
         	return true;
         } 
         if (keyEvent.getKey() == WatchUi.KEY_MENU) {
 	        var menu = new WatchUi.Menu2({:title=>"GrindCounter"});
         	// Add menu items for demonstrating toggles, checkbox and icon menu items
-        	menu.addItem(new WatchUi.MenuItem("Settings", null, "settings", null));
-        	WatchUi.pushView(menu, new GrindCounterMenu2Delegate(), WatchUi.SLIDE_UP );
-        	mCurrentView = 1;
+        	menu.addItem(new WatchUi.MenuItem("Count Target", null, "settings_count", null));
+        	menu.addItem(new WatchUi.MenuItem("Timeout", null, "settings_timeout", null));
+        	WatchUi.pushView(menu, new $.GrindCounterMenu2Delegate(), WatchUi.SLIDE_UP );
+        	$.g_currentView = 1;
         	return true;        
         }
         return false;
     }
     
-    function onBack() {
-    	mSave = false;
-    	if (mCurrentView == 0) {
-    		mExit = true;
+    public function onBack() as Boolean  {
+    	$.g_save = false;
+    	if ($.g_currentView == 0) {
+    		$.g_exit = true;
     	}
     	return false;
     }

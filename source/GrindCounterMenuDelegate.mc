@@ -11,22 +11,25 @@ class GrindCounterMenu2Delegate extends WatchUi.Menu2InputDelegate {
     function onSelect(item) {
         if( item.getId().equals("save_exit") ) {
         	System.println("save_exit selected");
-        	mExit = true;
-        	mSave = true;
+        	$.g_exit = true;
+        	$.g_save = true;
         	WatchUi.popView(WatchUi.SLIDE_DOWN);  
         } else if ( item.getId().equals("exit") ) {
         	System.println("exit selected");
-        	mExit = true;
-        	mSave = false;
+        	$.g_exit = true;
+        	$.g_save = false;
         	WatchUi.popView(WatchUi.SLIDE_DOWN);  
         } else if ( item.getId().equals("resume") ) {
         	System.println("resume selected");
-        	mExit = false;
-        	mSave = false;
+        	$.g_exit = false;
+        	$.g_save = false;
 			WatchUi.popView(WatchUi.SLIDE_DOWN);
-        } else if ( item.getId().equals("settings") ) {
+        } else if ( item.getId().equals("settings_count") ) {
         	System.println("settings selected");
-           	WatchUi.pushView( new GrindCounterSettingsView(),new GrindCounterSettingsViewDelegate(), WatchUi.SLIDE_DOWN );
+           	WatchUi.pushView( new GrindCounterSettingsCountView(),new GrindCounterSettingsCountViewDelegate(), WatchUi.SLIDE_DOWN );
+        } else if ( item.getId().equals("settings_timeout") ) {
+        	System.println("settings selected");
+           	WatchUi.pushView( new GrindCounterSettingsTimeoutView(),new GrindCounterSettingsTimeoutViewDelegate(), WatchUi.SLIDE_DOWN );
         } else {
             WatchUi.requestUpdate();
         }
@@ -34,7 +37,7 @@ class GrindCounterMenu2Delegate extends WatchUi.Menu2InputDelegate {
     }
 
     function onBack() {
-    	mSave = false;
+    	$.g_save = false;
         WatchUi.popView(WatchUi.SLIDE_DOWN);
     }
 }

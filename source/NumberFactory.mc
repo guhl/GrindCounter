@@ -1,49 +1,60 @@
-using Toybox.Graphics;
-using Toybox.WatchUi;
+import Toybox.Graphics;
+import Toybox.Lang;
+import Toybox.WatchUi;
 
 class NumberFactory extends WatchUi.PickerFactory {
-    hidden var mStart;
-    hidden var mStop;
-    hidden var mIncrement;
-    hidden var mFormatString;
-    hidden var mFont;
+    private var _start as Number;
+    private var _stop as Number;
+    private var _increment as Number;
+    private var _formatString as String;
+    private var _font as FontDefinition;
+
+    public function initialize(start as Number, stop as Number, increment as Number, options as {
+        :font as FontDefinition,
+        :format as String
+    }) {
+        PickerFactory.initialize();
+
+        _start = start;
+        _stop = stop;
+        _increment = increment;
+
+        var format = options.get(:format);
+        if (format != null) {
+            _formatString = format;
+        } else {
+            _formatString = "%d";
+        }
+
+        var font = options.get(:font);
+        if (font != null) {
+            _font = font;
+        } else {
+            _font = Graphics.FONT_NUMBER_MILD;
+        }
+    }
 
     function getIndex(value) {
-        var index = (value / mIncrement) - mStart;
+        var index = (value / _increment) - _start;
         return index;
     }
 
-    function initialize(start, stop, increment, options) {
-        PickerFactory.initialize();
-
-        mStart = start;
-        mStop = stop;
-        mIncrement = increment;
-
-        if(options != null) {
-            mFormatString = options.get(:format);
-            mFont = options.get(:font);
+    public function getDrawable(index as Number, selected as Boolean) as Drawable? {
+        var value = getValue(index);
+        var text = "No item";
+        if (value instanceof Number) {
+            text = value.format(_formatString);
         }
-
-        if(mFont == null) {
-            mFont = Graphics.FONT_NUMBER_HOT;
-        }
-
-        if(mFormatString == null) {
-            mFormatString = "%d";
-        }
+        return new WatchUi.Text({:text=>text, :color=>Graphics.COLOR_WHITE, :font=>_font,
+            :locX=>WatchUi.LAYOUT_HALIGN_CENTER, :locY=>WatchUi.LAYOUT_VALIGN_CENTER});
     }
 
-    function getDrawable(index, selected) {
-        return new WatchUi.Text( { :text=>getValue(index).format(mFormatString), :color=>Graphics.COLOR_WHITE, :font=> mFont, :locX =>WatchUi.LAYOUT_HALIGN_CENTER, :locY=>WatchUi.LAYOUT_VALIGN_CENTER } );
+    public function getValue(index as Number) as Object? {
+        return _start + (index * _increment);
     }
 
-    function getValue(index) {
-        return mStart + (index * mIncrement);
-    }
-
-    function getSize() {
-        return ( mStop - mStart ) / mIncrement + 1;
+    public function getSize() as Number {
+        return (_stop - _start) / _increment + 1;
     }
 
 }
