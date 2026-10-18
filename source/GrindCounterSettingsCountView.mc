@@ -23,8 +23,8 @@ class GrindCounterSettingsCountView extends WatchUi.View {
     //! Load your resources here
     public function onLayout(dc as Dc) as Void {
         setLayout(Rez.Layouts.SettingsCountLayout(dc));
-        _labelCountTarget = View.findDrawableById("id_count_target");
-        _labelCountTargetText = View.findDrawableById("id_count_target_text");
+        _labelCountTarget = View.findDrawableById("id_count_target") as Text;
+        _labelCountTargetText = View.findDrawableById("id_count_target_text") as Text;
         $.g_cnt_target = Properties.getValue("countTarget") == null? DEFAULT_TARGET : Properties.getValue("countTarget");
         _labelCountTarget.setText($.g_cnt_target.toString());
         _labelCountTargetText.setText("Count Target");
@@ -79,14 +79,23 @@ class CountTargetPickerDelegate extends WatchUi.PickerDelegate {
 class CntPicker extends WatchUi.Picker {
 
     public function initialize() {
-        var title = new WatchUi.Text({:text=>Rez.Strings.CountTargetPickerTitle, :locX =>WatchUi.LAYOUT_HALIGN_CENTER, :locY=>WatchUi.LAYOUT_VALIGN_BOTTOM, :color=>Graphics.COLOR_WHITE});
+        var title = new WatchUi.Text({
+            :text => Rez.Strings.CountTargetPickerTitle,
+            :locX => WatchUi.LAYOUT_HALIGN_CENTER,
+            :locY => WatchUi.LAYOUT_VALIGN_BOTTOM,
+            :color => Graphics.COLOR_WHITE
+        });
         var factory = new NumberFactory(1,299,1, {:font=>Graphics.FONT_NUMBER_MILD});
-        var defaults = new[1];
-        var default_index = $.g_cnt_target - 1;
-        if ($.g_cnt_target != null) {
-        	defaults[0] = default_index.toLong();
-        }
-        Picker.initialize({:title=>title, :pattern=>[factory], :defaults=>defaults});
+
+        var pickerOptions = {
+            :title => title,
+            :pattern => [factory],
+        };
+        // Initialize defaults with actual value (use 0 or DEFAULT_TIMEOUT if null)
+        var defaultValue = $.g_cnt_target != null ? $.g_cnt_target : DEFAULT_TARGET;
+        pickerOptions[:defaults] = [defaultValue-1];
+
+        Picker.initialize(pickerOptions);
     }
 
     public function onUpdate(dc as Dc) as Void {

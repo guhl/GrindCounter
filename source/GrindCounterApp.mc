@@ -25,7 +25,7 @@ class GrindCounterApp extends Application.AppBase {
     } 
 
     // Return the initial view of your application here
-    public function getInitialView() as Array<Views or InputDelegates>? {
+    public function getInitialView()  as [Views] or [Views, InputDelegates] {
         return [ new GrindCounterView(), new GrindCounterDelegate() ];
     }
 

@@ -6,7 +6,7 @@ import Toybox.Lang;
 import Toybox.Graphics;
 
 const DEFAULT_TARGET as Number = 86;
-const DEFAULT_TIMEOUT as Number = 500;
+const DEFAULT_TIMEOUT as Number = 200;
 var g_cnt_target as Number = 0;
 var g_timeout_target as Number = 0;
 
@@ -25,6 +25,11 @@ class GrindCounterView extends WatchUi.View {
 	// Timeout variables
 	private var _timer as Timer.Timer?;
 	private var _timeout_count as Number = 0;
+    private var _timeout_vibe_profile = [
+                    new Attention.VibeProfile(100, 2000),
+                    new Attention.VibeProfile(100, 2000),
+                    new Attention.VibeProfile(100, 2000)
+                ];
 
     public function initialize() {
         View.initialize();
@@ -93,6 +98,9 @@ class GrindCounterView extends WatchUi.View {
 	 		System.println( "Timeout reached" );
         	$.g_exit = true;
         	$.g_save = false;
+            if (Attention has :vibrate) {
+                Attention.vibrate( _timeout_vibe_profile );
+            }
 			WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
  		}
     }

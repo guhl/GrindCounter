@@ -23,8 +23,8 @@ class GrindCounterSettingsTimeoutView extends WatchUi.View {
     //! Load your resources here
     public function onLayout(dc as Dc) as Void {
         setLayout(Rez.Layouts.SettingsTimeoutLayout(dc));
-        _labelTimeoutTarget = View.findDrawableById("id_timeout_target");
-        _labelTimeoutTargetText = View.findDrawableById("id_timeout_target_text");
+        _labelTimeoutTarget = View.findDrawableById("id_timeout_target") as Text;
+        _labelTimeoutTargetText = View.findDrawableById("id_timeout_target_text") as Text;
         $.g_timeout_target = Properties.getValue("timeoutTarget") == null? DEFAULT_TIMEOUT : Properties.getValue("timeoutTarget");
         _labelTimeoutTarget.setText($.g_timeout_target.toString());
         _labelTimeoutTargetText.setText("Timeout Target");
@@ -79,14 +79,23 @@ class TimeoutTargetPickerDelegate extends WatchUi.PickerDelegate {
 class TimeoutPicker extends WatchUi.Picker {
 
     public function initialize() {
-        var title = new WatchUi.Text({:text=>Rez.Strings.TimeoutTargetPickerTitle, :locX =>WatchUi.LAYOUT_HALIGN_CENTER, :locY=>WatchUi.LAYOUT_VALIGN_BOTTOM, :color=>Graphics.COLOR_WHITE});
-        var factory = new NumberFactory(0,999,1, {:font=>Graphics.FONT_NUMBER_MILD});
-        var defaults = new[1];
-        var default_index = $.g_timeout_target;
-        if ($.g_timeout_target != null) {
-        	defaults[0] = default_index.toLong();
-        }
-        Picker.initialize({:title=>title, :pattern=>[factory], :defaults=>defaults});
+        var title = new WatchUi.Text({
+            :text => Rez.Strings.TimeoutTargetPickerTitle,
+            :locX => WatchUi.LAYOUT_HALIGN_CENTER,
+            :locY => WatchUi.LAYOUT_VALIGN_BOTTOM,
+            :color => Graphics.COLOR_WHITE
+        });
+        var factory = new NumberFactory(0, 999, 1, {:font => Graphics.FONT_NUMBER_MILD});
+              
+        var pickerOptions = {
+            :title => title,
+            :pattern => [factory]
+        };
+        // Initialize defaults with actual value (use 0 or DEFAULT_TIMEOUT if null)
+        var defaultValue = $.g_timeout_target != null ? $.g_timeout_target.toLong() : DEFAULT_TIMEOUT;
+        pickerOptions[:defaults] = [defaultValue-1];
+    
+        Picker.initialize(pickerOptions);
     }
 
     public function onUpdate(dc as Dc) as Void {

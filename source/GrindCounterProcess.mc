@@ -76,7 +76,7 @@ class GrindCounterProcess {
         try {
             _filter = new Math.FirFilter(options);
             _logger = new SensorLogging.SensorLogger({:enableAccelerometer => true});
-            _session = ActivityRecording.createSession({:name=>"GrindCounter", :sport=>ActivityRecording.SPORT_GENERIC});
+            _session = ActivityRecording.createSession({:name=>"GrindCounter", :sport=>Activity.SPORT_GENERIC});
         }
         catch(e) {
             System.println(e.getErrorMessage());
@@ -120,15 +120,15 @@ class GrindCounterProcess {
     public function onStop() as Void {
     	Sensor.unregisterSensorDataListener();
         if (_session != null) {
-            _session.stop();
+//            _session.stop();
+            if (!$.g_save) {
+                System.println("discarding session onStop");
+                _session.discard();
+            } else {
+                System.println("saving session onStop");
+                _session.save();        
+            }
         }
-    	if (!$.g_save) {
-        	System.println("discarding session onStop");
-        	_session.discard();
-    	} else {
-        	System.println("saving session onStop");
-        	_session.save();        
-    	}
 	}
 
     // Return current grind count
